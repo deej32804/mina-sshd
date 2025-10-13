@@ -1,3 +1,4 @@
+<?xml version="1.0"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     <!--
@@ -112,7 +113,7 @@
         <slf4j.version>1.7.25</slf4j.version>
         <spring.version>5.0.2.RELEASE</spring.version>
         <jgit.version>4.9.2.201712150930-r</jgit.version>
-        <junit.version>4.12</junit.version>
+        <junit.version>4.13.1</junit.version>
         <surefire.plugin.version>2.20.1</surefire.plugin.version>
         <!-- See https://pmd.github.io/ for available latest version -->
         <pmd.version>5.6.1</pmd.version>
@@ -389,7 +390,7 @@
                                         </goals>
                                     </pluginExecutionFilter>
                                     <action>
-                                        <execute />
+                                        <execute/>
                                     </action>
                                 </pluginExecution>
                                 <pluginExecution>
@@ -404,7 +405,7 @@
                                         </goals>
                                     </pluginExecutionFilter>
                                     <action>
-                                        <execute />
+                                        <execute/>
                                     </action>
                                 </pluginExecution>
                                 <pluginExecution>
@@ -417,7 +418,7 @@
                                         </goals>
                                     </pluginExecutionFilter>
                                     <action>
-                                        <execute />
+                                        <execute/>
                                     </action>
                                 </pluginExecution>
                                 <pluginExecution>
@@ -430,7 +431,7 @@
                                         </goals>
                                     </pluginExecutionFilter>
                                     <action>
-                                        <ignore />
+                                        <ignore/>
                                     </action>
                                 </pluginExecution>
                                 <pluginExecution>
@@ -443,7 +444,7 @@
                                         </goals>
                                     </pluginExecutionFilter>
                                     <action>
-                                        <execute />
+                                        <execute/>
                                     </action>
                                 </pluginExecution>
                             </pluginExecutions>
@@ -963,7 +964,7 @@
         <repository>
             <id>dummy</id>
             <name>Dummy to avoid accidental deploys</name>
-            <url />
+            <url/>
         </repository>
     </distributionManagement>
 
