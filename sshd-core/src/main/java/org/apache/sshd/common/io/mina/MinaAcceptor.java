@@ -25,10 +25,19 @@ import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.apache.mina.core.service.IoAcceptor;
+
 import org.apache.mina.core.service.IoHandler;
+
 import org.apache.mina.core.service.IoProcessor;
+
 import org.apache.mina.core.service.IoService;
+
+import org.apache.mina.core.session.IoSession;
+
+import org.apache.mina.filter.FilterEvent;
+
 import org.apache.mina.transport.socket.nio.NioSession;
+
 import org.apache.mina.transport.socket.nio.NioSocketAcceptor;
 import org.apache.sshd.common.FactoryManager;
 
@@ -111,8 +120,27 @@ public class MinaAcceptor extends MinaService implements org.apache.sshd.common.
     }
 
     @Override
-    public Set<SocketAddress> getBoundAddresses() {
-        IoAcceptor acceptor = getAcceptor();
-        return acceptor.getLocalAddresses();
+
+        public Set<SocketAddress> getBoundAddresses() {
+
+            IoAcceptor acceptor = getAcceptor();
+
+            return acceptor.getLocalAddresses();
+
+        }
+
+    
+
+        @Override
+
+        public void event(IoSession session, FilterEvent event) throws Exception {
+
+            // Delegate to parent handler if it supports FilterEvent handling
+
+            // For now, provide empty implementation as the parent IoHandler interface
+
+            // in SSHD doesn't have this method
+
+        }
+
     }
-}

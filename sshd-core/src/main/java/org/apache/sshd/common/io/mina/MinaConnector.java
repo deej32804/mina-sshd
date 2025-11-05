@@ -27,6 +27,7 @@ import org.apache.mina.core.service.IoConnector;
 import org.apache.mina.core.service.IoHandler;
 import org.apache.mina.core.service.IoProcessor;
 import org.apache.mina.core.session.IoSession;
+import org.apache.mina.filter.FilterEvent;
 import org.apache.mina.transport.socket.nio.NioSession;
 import org.apache.mina.transport.socket.nio.NioSocketConnector;
 import org.apache.sshd.common.FactoryManager;
@@ -74,55 +75,120 @@ public class MinaConnector extends MinaService implements org.apache.sshd.common
     }
 
     @Override
-    public IoConnectFuture connect(SocketAddress address) {
-        class Future extends DefaultSshFuture<IoConnectFuture> implements IoConnectFuture {
-            Future(Object lock) {
-                super(address, lock);
+
+        public IoConnectFuture connect(SocketAddress address) {
+
+            class Future extends DefaultSshFuture<IoConnectFuture> implements IoConnectFuture {
+
+                Future(Object lock) {
+
+                    super(address, lock);
+
+                }
+
+    
+
+                @Override
+
+                public org.apache.sshd.common.io.IoSession getSession() {
+
+                    Object v = getValue();
+
+                    return v instanceof org.apache.sshd.common.io.IoSession ? (org.apache.sshd.common.io.IoSession) v : null;
+
+                }
+
+    
+
+                @Override
+
+                public Throwable getException() {
+
+                    Object v = getValue();
+
+                    return v instanceof Throwable ? (Throwable) v : null;
+
+                }
+
+    
+
+                @Override
+
+                public boolean isConnected() {
+
+                    return getValue() instanceof org.apache.sshd.common.io.IoSession;
+
+                }
+
+    
+
+                @Override
+
+                public void setSession(org.apache.sshd.common.io.IoSession session) {
+
+                    setValue(session);
+
+                }
+
+    
+
+                @Override
+
+                public void setException(Throwable exception) {
+
+                    setValue(exception);
+
+                }
+
             }
 
-            @Override
-            public org.apache.sshd.common.io.IoSession getSession() {
-                Object v = getValue();
-                return v instanceof org.apache.sshd.common.io.IoSession ? (org.apache.sshd.common.io.IoSession) v : null;
-            }
+    
 
-            @Override
-            public Throwable getException() {
-                Object v = getValue();
-                return v instanceof Throwable ? (Throwable) v : null;
-            }
+            IoConnectFuture future = new Future(null);
 
-            @Override
-            public boolean isConnected() {
-                return getValue() instanceof org.apache.sshd.common.io.IoSession;
-            }
+            IoConnector connector = getConnector();
 
-            @Override
-            public void setSession(org.apache.sshd.common.io.IoSession session) {
-                setValue(session);
-            }
+            ConnectFuture connectFuture = connector.connect(address);
 
-            @Override
-            public void setException(Throwable exception) {
-                setValue(exception);
-            }
+            connectFuture.addListener((IoFutureListener<ConnectFuture>) cf -> {
+
+                Throwable t = cf.getException();
+
+                if (t != null) {
+
+                    future.setException(t);
+
+                } else if (cf.isCanceled()) {
+
+                    future.cancel();
+
+                } else {
+
+                    IoSession ioSession = cf.getSession();
+
+                    org.apache.sshd.common.io.IoSession sshSession = getSession(ioSession);
+
+                    future.setSession(sshSession);
+
+                }
+
+            });
+
+            return future;
+
         }
 
-        IoConnectFuture future = new Future(null);
-        IoConnector connector = getConnector();
-        ConnectFuture connectFuture = connector.connect(address);
-        connectFuture.addListener((IoFutureListener<ConnectFuture>) cf -> {
-            Throwable t = cf.getException();
-            if (t != null) {
-                future.setException(t);
-            } else if (cf.isCanceled()) {
-                future.cancel();
-            } else {
-                IoSession ioSession = cf.getSession();
-                org.apache.sshd.common.io.IoSession sshSession = getSession(ioSession);
-                future.setSession(sshSession);
-            }
-        });
-        return future;
+    
+
+        @Override
+
+        public void event(IoSession session, FilterEvent event) throws Exception {
+
+        
+
+                    // Handle filter events - no specific handling needed for SSH functionality
+
+        
+
+                }
     }
-}
