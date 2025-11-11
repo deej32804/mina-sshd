@@ -256,7 +256,26 @@ public class SpringSftpSession extends AbstractLoggingBean implements Session<Di
     }
 
     @Override
-    public String toString() {
-        return getClass().getSimpleName() + "[" + getClientInstance() + "]";
-    }
+
+        public String getHostPort() {
+
+            // The SftpClient doesn't directly expose host/port information
+
+            // Return a placeholder or extract from client if possible
+
+            SftpClient client = getClientInstance();
+
+            return client.toString(); // Using toString as a fallback
+
+        }
+
+    
+
+        @Override
+
+        public String toString() {
+
+            return getClass().getSimpleName() + "[" + getClientInstance() + "]";
+
+        }
 }
