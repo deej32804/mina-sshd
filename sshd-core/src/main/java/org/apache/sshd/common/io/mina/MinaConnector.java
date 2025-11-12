@@ -27,6 +27,7 @@ import org.apache.mina.core.service.IoConnector;
 import org.apache.mina.core.service.IoHandler;
 import org.apache.mina.core.service.IoProcessor;
 import org.apache.mina.core.session.IoSession;
+import org.apache.mina.filter.FilterEvent;
 import org.apache.mina.transport.socket.nio.NioSession;
 import org.apache.mina.transport.socket.nio.NioSocketConnector;
 import org.apache.sshd.common.FactoryManager;
@@ -74,7 +75,18 @@ public class MinaConnector extends MinaService implements org.apache.sshd.common
     }
 
     @Override
-    public IoConnectFuture connect(SocketAddress address) {
+
+        public void event(IoSession session, FilterEvent event) throws Exception {
+
+            // Handle filter events if needed
+
+        }
+
+    
+
+        @Override
+
+        public IoConnectFuture connect(SocketAddress address) {
         class Future extends DefaultSshFuture<IoConnectFuture> implements IoConnectFuture {
             Future(Object lock) {
                 super(address, lock);
